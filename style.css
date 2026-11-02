@@ -1,0 +1,118 @@
+:root {
+    --bg-void: #211f2e;
+    --text-dialogue: #e5e7eb;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: var(--bg-void);
+    color: var(--text-dialogue);
+    margin: 0;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Animaciones */
+@keyframes blomHover {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*Animación / saludo*/
+@keyframes blomWave {
+    0%, 100% {transform: rotate(-18deg);}
+    25% {transform: rotate(-50deg);}
+    50% {transform: rotate(-15deg);}
+    75% {transform: rotate(-50deg);}
+}
+
+.blom-arm-right.waving {
+    animation: blomWave 0.6s ease-in-out 3;
+}
+
+
+/* Dialogos */
+.dialogue-text {
+    color: var(--text-dialogue);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    text-align: center;
+    margin-top: 64px;
+    font-size: 30px;
+    font-family: fantasy;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ==========================================================================
+   FONDO DE BLOM: piso de hexágonos en 3D (canvas) + resplandor
+   El dibujo lo hace fondo-hex.js; el color de fondo del body no cambia
+   ========================================================================== */
+
+/* Capa que cubre toda la pantalla y va DETRÁS de todo lo demás */
+.bg-hex {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none; /* no estorba a los clics */
+}
+
+/* Resplandor: violeta detrás de BLOM y un toque magenta abajo a la derecha */
+.bg-hex-glow {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 55vw 60vh at 50% 52%, rgba(120, 60, 220, 0.30), transparent),
+        radial-gradient(ellipse 45vw 45vh at 85% 100%, rgba(236, 72, 153, 0.20), transparent);
+    animation: bgBreath 7s ease-in-out infinite alternate;
+}
+
+/* El canvas donde fondo-hex.js dibuja el piso. Necesita este tamaño para saber de qué tamaño dibujar */
+#bg-hex-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* El resplandor "respira": crece y se atenúa suavemente */
+@keyframes bgBreath {
+    from { opacity: 0.65; transform: scale(1); }
+    to   { opacity: 1;    transform: scale(1.06); }
+}
+
+/* Si la persona tiene activado "reducir movimiento" en su sistema, el resplandor se queda quieto */
+@media (prefers-reduced-motion: reduce) {
+    .bg-hex-glow { animation: none; }
+}
