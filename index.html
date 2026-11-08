@@ -5,19 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLOM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-        }
-    }
-    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="w-screen h-screen flex flex-col justify-center items-center">
 
-    <!-- Fondo: va justo después de abrir el body -->
+    <!-- Fondo -->
     <div class="bg-hex" aria-hidden="true">
         <div class="bg-hex-glow"></div>
         <canvas id="bg-hex-canvas"></canvas>
@@ -25,10 +17,33 @@
 
     <main class="w-full h-full flex flex-col justify-center items-center relative">
 
-        <!-- Centerpiece: BLOM Robot -->
-        <div id="blom-3d-container" style="width: 350px; height: 400px;"></div>
+        <!-- BLOM 2D -->
+        <div id="blom-container" title="Acariciar a BLOM">
+            <div class="blom-glow"></div>
+            <div class="blom" data-mood="happy" id="blom">
+                <div class="blom-antenna"></div>
+                <div class="blom-head">
+                    <div class="blom-face">
+                        <div class="blom-eye left"></div>
+                        <div class="blom-eye right"></div>
+                        <div class="blom-cheek left"></div>
+                        <div class="blom-cheek right"></div>
+                    </div>
+                </div>
+                <div class="blom-body">
+                    <div class="blom-arm left"></div>
+                    <div class="blom-arm right" id="blom-arm-right"></div>
+                    <div class="blom-chest">
+                        <span class="blom-chest-dot"></span>
+                        <span class="blom-chest-dot"></span>
+                        <span class="blom-chest-dot"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="blom-shadow"></div>
+        </div>
 
-        <!-- Dialogo -->
+        <!-- Diálogo -->
         <div class="dialogue-text">
             <p>Texto inicial aquí...</p>
         </div>
@@ -41,21 +56,25 @@
                 class="px-4 py-2 rounded-lg bg-cyan-500 text-white">Adivinar</button>
         </div>
 
-        <!-- Menu: elegir que juego jugar -->
         <div id="game-menu-ui" class="hidden mt-8 flex flex-col items-center gap-3"></div>
 
-        <!-- Preguntar el nombre -->
-        <div id="name-ui" class="hidden mt-8 flex flex-col items-center gap-3">
-            <input type="text" id="name-input"
-                class="px-3 py-2 rounded-lg border border-gray-400" placeholder="Tu nombre..." />
-            <button id="name-button"
-                class="px-4 py-2 rounded-lg bg-cyan-500 text-white">Continuar</button>
+                <!-- Preguntar nombre y edad -->
+        <div id="name-ui" class="name-card hidden">
+            <div class="name-card-inner">
+                <div class="name-field">
+                    <span class="name-field-icon" aria-hidden="true">👤</span>
+                    <input type="text" id="name-input" placeholder="Nombre" maxlength="24" autocomplete="nickname" />
+                </div>
+                <div class="name-field">
+                    <span class="name-field-icon" aria-hidden="true">🎂</span>
+                    <input type="number" id="age-input" placeholder="Edad" min="1" max="120" inputmode="numeric" />
+                </div>
+                <button type="button" id="name-button" class="name-submit">Continuar</button>
+            </div>
         </div>
 
-        <!-- Menu: elegir modo de juego -->
         <div id="mode-menu-ui" class="hidden mt-8 flex gap-6"></div>
 
-        <!-- Menu: seguir jugando -->
         <div id="continue-menu-ui" class="hidden mt-8 flex gap-4">
             <button id="continue-yes-button"
                 class="px-4 py-2 rounded-lg bg-cyan-500 text-white">Sí, vamos</button>
@@ -65,12 +84,10 @@
 
     </main>
 
-    <footer
-        class="fixed bottom-2 left-3 text-label-code font-label-code opacity-30 hover:opacity-70 transition-opacity">
+    <footer class="fixed bottom-2 left-3 text-xs opacity-30 hover:opacity-70 transition-opacity">
         BLOM
     </footer>
 
-    <script type="module" src="robot/BLOM3D.js"></script>
     <script src="robot/dialogue.js"></script>
     <script src="storage.js"></script>
     <script src="events.js"></script>
